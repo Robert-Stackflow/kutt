@@ -59,8 +59,11 @@ function i18nHandler(req, res, next) {
     locale = i18n.getLocales().find(l => l === queryLang) || defaultLocale;
   } else if (!req.cookies.lang) {
     // set locale from browser's language
-    const headerLang = req.get("Accept-Language").replace("-", "_");
-    locale = i18n.getLocales().find(l => l === headerLang) || defaultLocale;
+    const acceptLanguage = req.get("Accept-Language");
+    if (acceptLanguage) {
+      const headerLang = acceptLanguage.replace("-", "_");
+      locale = i18n.getLocales().find(l => l === headerLang) || defaultLocale;
+    }
   } else {
     // get locale from cookie
     locale = i18n.getLocales().find(l => l === cookieLang) || defaultLocale;
